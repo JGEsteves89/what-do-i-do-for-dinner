@@ -9,6 +9,11 @@
 				type="card, list-item, table, button"></v-skeleton-loader>
 			<v-card :loading="loading" v-if="recipe">
 				<v-card-title>Hoje</v-card-title>
+				<v-tabs grow>
+					<v-tab @click="getOption(0)">Opção 1</v-tab>
+					<v-tab @click="getOption(1)">Opção 2</v-tab>
+					<v-tab @click="getOption(2)">Opção 3</v-tab>
+				</v-tabs>
 				<v-img :src="recipe.image" />
 				<v-card-title class="headline">{{ recipe.name }}</v-card-title>
 				<v-tabs grow>
@@ -17,7 +22,7 @@
 					<v-tab-item>
 						<v-card-text>
 							<v-list>
-								<v-list-item min-height="22" v-for="(item, i) in recipe.ingredients" :key="i">
+								<v-list-item class="ingredient-item" v-for="(item, i) in recipe.ingredients" :key="i">
 									<v-container fluid ma-0 pa-0>
 										<v-layout row class="d-flex justify-space-between pa-0 ma-0">
 											<v-flex xs8>{{ item.name }}</v-flex>
@@ -29,12 +34,17 @@
 						</v-card-text>
 					</v-tab-item>
 					<v-tab-item>
-						<v-card-text>Preparação</v-card-text>
+						<v-list>
+							<v-list-item min-height="22" v-for="(item, i) in recipe.steps" :key="i">
+								<v-card-text fluid ma-0 pa-0>
+									{{ item }}
+								</v-card-text>
+							</v-list-item>
+						</v-list>
 					</v-tab-item>
 				</v-tabs>
 				<v-card-actions>
-					<v-spacer />
-					<v-btn color="primary" nuxt to="/inspire">Continue</v-btn>
+					<v-btn color="accent" elevation="5" fab large><v-icon large>mdi-basket-plus</v-icon></v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-col>
@@ -48,15 +58,38 @@ export default {
 		return {
 			loading: true,
 			recipe: null,
+			alternatives: [],
 		};
+	},
+	methods: {
+		getRecipeData() {
+			this.$store.dispatch('store/fetchRecipes').then((res) => {
+				this.loading = false;
+				const list = Object.values(res);
+				console.log(list.length);
+				const todayRandomIndex = Math.floor((list.length / 365 / 3) * (new Date().getDate() + new Date().getMonth() * 30));
+				for (let i = 0; i < 3; i++) {
+					this.alternatives.push(list[todayRandomIndex + i * 365]);
+				}
+				this.recipe = this.alternatives[0];
+				console.log('I got the data');
+			});
+		},
+		getOption(n) {
+			this.recipe = this.alternatives[n];
+		},
 	},
 	mounted() {
 		console.log('Component mounted');
-		this.$store.dispatch('store/fetchRecipes').then((res) => {
-			this.loading = false;
-			this.recipe = Object.values(res)[0];
-			console.log('I got the data');
-		});
+		this.getRecipeData();
 	},
 };
 </script>
+<style scoped>
+.ingredient-item {
+	max-height: 1.5rem;
+	min-height: 1rem;
+}
+.headline {
+}
+</style>

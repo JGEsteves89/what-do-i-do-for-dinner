@@ -1,5 +1,4 @@
-// import axios from 'axios';
-
+const getAuthors = () => import('~/data/recipes.json').then((m) => m.default || m);
 interface Recipe {
 	name: string;
 	image: string;
@@ -36,7 +35,7 @@ export const mutations = {
 export const actions = {
 	async fetchRecipes({ state }: any) {
 		if (state.allRecipes) return state.allRecipes;
-		const data = await (this as any).$axios.$get('/recipes.json');
+		const data = await getAuthors();
 		(this as any).commit('store/changeRecipes', data.recipes);
 		return data.recipes;
 	},

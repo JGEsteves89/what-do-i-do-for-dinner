@@ -1,7 +1,9 @@
 # what-do-i-do-for-dinner
 
-[Live](https://jgesteves89.github.io/what-do-i-do-for-dinner/)
 [![Deploy Nuxt site to Pages](https://github.com/JGEsteves89/what-do-i-do-for-dinner/actions/workflows/nuxtjs.yml/badge.svg)](https://github.com/JGEsteves89/what-do-i-do-for-dinner/actions/workflows/nuxtjs.yml)
+
+
+[Live](https://jgesteves89.github.io/what-do-i-do-for-dinner/)
 
 
 ## Build Setup

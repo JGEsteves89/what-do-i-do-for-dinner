@@ -14,7 +14,13 @@
 					<v-tab @click="getOption(1)">Opção 2</v-tab>
 					<v-tab @click="getOption(2)">Opção 3</v-tab>
 				</v-tabs>
-				<v-img :src="recipeOfDay.recipe.image" />
+				<v-img :src="recipeOfDay.recipe.image">
+					<template v-slot:placeholder>
+						<v-row class="fill-height ma-0" align="center" justify="center">
+							<v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+						</v-row>
+					</template>
+				</v-img>
 				<v-card-title class="headline">{{ recipeOfDay.recipe.name }}</v-card-title>
 				<v-tabs grow>
 					<v-tab>Ingredientes</v-tab>

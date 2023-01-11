@@ -1,7 +1,7 @@
 ## TODO
 
 [X] - Refactor recipe of the day
-[ ] - Centralize all the information in the store
+[X] - Centralize all the information in the store
 [ ] - Store and retrieve settings
 [ ] - Create icon
 [ ] - Create view for shopping list

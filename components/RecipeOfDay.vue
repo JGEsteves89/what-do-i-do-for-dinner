@@ -2,12 +2,12 @@
 	<v-row justify="center" align="center">
 		<v-col cols="12" sm="8" md="6">
 			<v-skeleton-loader
-				v-if="recipeOfDay && !recipeOfDay.recipe"
+				v-if="!recipeOfDay.recipe"
 				:loading="recipeOfDay.loading"
 				class="mx-auto"
 				max-height="100vh"
 				type="card, list-item, table, button"></v-skeleton-loader>
-			<v-card :loading="recipeOfDay.loading" v-if="recipeOfDay && recipeOfDay.recipe">
+			<v-card :loading="recipeOfDay.loading" v-if="recipeOfDay.recipe">
 				<v-card-title>{{ recipeOfDay.title }}</v-card-title>
 				<v-tabs grow>
 					<v-tab @click="getOption(0)">Opção 1</v-tab>
@@ -57,7 +57,7 @@ export default {
 	props: ['recipeOfDay'],
 	methods: {
 		getOption(n) {
-			this.recipeOfDay.recipe = this.recipeOfDay.alternatives[n];
+			this.$store.dispatch('store/changeSelection', n);
 		},
 	},
 };

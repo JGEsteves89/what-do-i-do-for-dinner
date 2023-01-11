@@ -13,7 +13,9 @@
 			</v-list>
 		</v-navigation-drawer>
 		<v-app-bar :clipped-left="clipped" fixed app>
-			<v-toolbar-title>{{ title }}</v-toolbar-title>
+			<v-container fluid>
+				<v-toolbar-title class="d-flex justify-center">{{ title }}</v-toolbar-title>
+			</v-container>
 		</v-app-bar>
 		<v-main>
 			<v-container>
@@ -65,3 +67,4 @@ export default {
 	},
 };
 </script>
+<style scoped></style>

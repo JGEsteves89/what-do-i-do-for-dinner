@@ -1,5 +1,5 @@
 <template>
-	<v-row justify="center" align="center">
+	<v-row class="w-90" justify="center" align="center">
 		<v-col cols="12" sm="8" md="6">
 			<v-skeleton-loader
 				v-if="!recipeOfDay.recipe"
@@ -8,12 +8,6 @@
 				max-height="100vh"
 				type="card, list-item, table, button"></v-skeleton-loader>
 			<v-card :loading="recipeOfDay.loading" v-if="recipeOfDay.recipe">
-				<v-card-title>{{ recipeOfDay.title }}</v-card-title>
-				<v-tabs grow>
-					<v-tab @click="getOption(0)">Opção 1</v-tab>
-					<v-tab @click="getOption(1)">Opção 2</v-tab>
-					<v-tab @click="getOption(2)">Opção 3</v-tab>
-				</v-tabs>
 				<v-img :src="recipeOfDay.recipe.image">
 					<template v-slot:placeholder>
 						<v-row class="fill-height ma-0" align="center" justify="center">
@@ -21,18 +15,29 @@
 						</v-row>
 					</template>
 				</v-img>
+				<v-tabs grow>
+					<v-tab @click="getOption(0)">Opção 1</v-tab>
+					<v-tab @click="getOption(1)">Opção 2</v-tab>
+					<v-tab @click="getOption(2)">Opção 3</v-tab>
+				</v-tabs>
 				<v-card-title class="headline">{{ recipeOfDay.recipe.name }}</v-card-title>
 				<v-tabs grow>
 					<v-tab>Ingredientes</v-tab>
 					<v-tab>Preparação</v-tab>
 					<v-tab-item>
+						<v-container align="center" justify="center" class="d-flex flex-row px-10 py-0">
+							<v-card-text>Porções</v-card-text>
+							<v-text-field v-model="portions" hide-details single-line type="number" />
+						</v-container>
 						<v-card-text>
 							<v-list>
 								<v-list-item class="ingredient-item" v-for="(item, i) in recipeOfDay.recipe.ingredients" :key="i">
 									<v-container fluid ma-0 pa-0>
 										<v-layout row class="d-flex justify-space-between pa-0 ma-0">
 											<v-flex xs8>{{ item.name }}</v-flex>
-											<v-flex xs4 class="align-self-center">{{ item.qtd }} {{ item.unit }}</v-flex>
+											<v-flex xs4 class="align-self-center">
+												{{ (recipeOfDay.recipe.portions * item.qtd) / recipeOfDay.recipe.defaultPortions }} {{ item.unit }}
+											</v-flex>
 										</v-layout>
 									</v-container>
 								</v-list-item>
@@ -61,9 +66,21 @@
 export default {
 	name: 'RecipeOfTheDay',
 	props: ['recipeOfDay'],
+
 	methods: {
 		getOption(n) {
-			this.$store.dispatch('store/changeSelection', n);
+			this.$store.dispatch('store/changeSelection', { date: this.recipeOfDay.date, n });
+		},
+	},
+
+	computed: {
+		portions: {
+			get() {
+				return this.recipeOfDay.recipe.portions;
+			},
+			set(newPortions) {
+				this.$store.dispatch('store/setPortions', { date: this.recipeOfDay.date, portions: newPortions });
+			},
 		},
 	},
 };

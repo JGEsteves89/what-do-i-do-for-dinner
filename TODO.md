@@ -3,12 +3,19 @@
 [X] - Refactor recipe of the day
 [X] - Centralize all the information in the store
 [X] - Refactor data each day so it loads faster
-[ ] - Store and retrieve settings
+[X] - Add portions selection
+[X] - Add day selection buttons and gestures
+[X] - Refactoring to get the recipe with date as argument
+[X] - Add state to check if the user created or not the recipe of the day
+[X] - Create 3 days view
+[X] - Store information of 3 days view
+[X] - Create mechanism to add days
+[ ] - Add day selection with gestures
+[ ] - Add day selection for shopping list
 [ ] - Create icon
+[ ] - Store and retrieve settings
 [ ] - Create view for shopping list
 [ ] - Add remove from shopping list
 [ ] - Store shopping list
-[ ] - Create 3 days view
-[ ] - Store information of 3 days view
-[ ] - Create mechanism to add and remove days or a special view for 1, 3 and 5 days
-[ ] - Create ui
+[ ] - Create mechanism remove days
+[ ] - Enhance UI

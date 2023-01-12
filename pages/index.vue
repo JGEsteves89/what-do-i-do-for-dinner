@@ -1,25 +1,32 @@
 <template>
-	<v-window v-model="selected">
-		<v-window-item v-for="(recipe, i) in recipesOfDays" :key="i">
-			<v-row class="d-flex flex-row flex-nowrap justify-space-between py-5">
-				<v-btn :disabled="selected === 0" text @click="selectPage(selected - 1)">
-					<v-icon>mdi-chevron-left</v-icon>
-				</v-btn>
-				<v-slide-group class="maxw-70" v-model="selected">
-					<v-slide-item v-for="(recipe, n) in recipesOfDays" :key="n" v-slot="{ active, toggle }">
-						<v-btn class="mx-2" :input-value="active" active-class="purple white--text" depressed rounded @click="toggle">
-							{{ getDayString(recipe.date) }}
-						</v-btn>
-					</v-slide-item>
-				</v-slide-group>
-				<v-btn :disabled="selected === maxDays" text @click="selectPage(selected + 1)">
-					<v-icon v-if="selected === recipesOfDays.length - 1">mdi-plus</v-icon>
-					<v-icon v-else>mdi-chevron-right</v-icon>
-				</v-btn>
-			</v-row>
-			<RecipeOfDay :recipeOfDay="recipe"></RecipeOfDay>
-		</v-window-item>
-	</v-window>
+	<v-container>
+		<v-window v-model="selected">
+			<v-window-item v-for="(recipe, i) in recipesOfDays" :key="i">
+				<v-row class="d-flex flex-row flex-nowrap justify-space-between py-5">
+					<v-btn :disabled="selected === 0" text @click="selectPage(selected - 1)">
+						<v-icon>mdi-chevron-left</v-icon>
+					</v-btn>
+					<v-slide-group class="maxw-70" v-model="selected">
+						<v-slide-item v-for="(recipe, n) in recipesOfDays" :key="n" v-slot="{ active, toggle }">
+							<v-btn class="mx-2" :input-value="active" active-class="purple white--text" depressed rounded @click="toggle">
+								{{ getDayString(recipe.date) }}
+							</v-btn>
+						</v-slide-item>
+					</v-slide-group>
+					<v-btn :disabled="selected === maxDays" text @click="selectPage(selected + 1)">
+						<v-icon v-if="selected === recipesOfDays.length - 1">mdi-plus</v-icon>
+						<v-icon v-else>mdi-chevron-right</v-icon>
+					</v-btn>
+				</v-row>
+				<RecipeOfDay :recipeOfDay="recipe"></RecipeOfDay>
+			</v-window-item>
+		</v-window>
+		<v-fab-transition>
+			<v-btn fab large dark bottom right fixed>
+				<v-icon large>mdi-basket-plus</v-icon>
+			</v-btn>
+		</v-fab-transition>
+	</v-container>
 </template>
 
 <script>
@@ -30,8 +37,9 @@ export default {
 	},
 	computed: {
 		recipesOfDays() {
+			//console.log('Index recipes of days changed', new Date().getSeconds());
 			const recipesOfTheDays = this.$store.getters['store/getRecipesOfTheDays'];
-			console.log('recipesOfDays returned', recipesOfTheDays);
+			//console.log('recipesOfDays returned', recipesOfTheDays);
 			const daysArray = [];
 			for (const recipesOfTheDay of Object.values(recipesOfTheDays)) {
 				daysArray.push({
@@ -41,6 +49,7 @@ export default {
 					date: recipesOfTheDay.date,
 				});
 			}
+			//console.log('Index recipes of days set', new Date().getSeconds());
 			return daysArray;
 		},
 	},
@@ -74,7 +83,7 @@ export default {
 		},
 	},
 	mounted() {
-		console.log('Component mounted');
+		//console.log('Component mounted');
 		this.$store.dispatch('store/getRecipesOfTheDays', new Date());
 	},
 };

@@ -25,10 +25,14 @@
 					<v-tab>Ingredientes</v-tab>
 					<v-tab>Preparação</v-tab>
 					<v-tab-item>
-						<v-container align="center" justify="center" class="d-flex flex-row px-10 py-0">
-							<v-card-text>Porções</v-card-text>
-							<v-text-field v-model="portions" hide-details single-line type="number" />
-						</v-container>
+						<v-slider
+							class="pt-10 px-5"
+							min="1"
+							max="10"
+							v-model="portions"
+							label="Porções"
+							thumb-label="always"
+							@end="setPortions"></v-slider>
 						<v-card-text>
 							<v-list>
 								<v-list-item class="ingredient-item" v-for="(item, i) in recipeOfDay.recipe.ingredients" :key="i">
@@ -54,9 +58,6 @@
 						</v-list>
 					</v-tab-item>
 				</v-tabs>
-				<v-card-actions>
-					<v-btn color="accent" elevation="5" fab large><v-icon large>mdi-basket-plus</v-icon></v-btn>
-				</v-card-actions>
 			</v-card>
 		</v-col>
 	</v-row>
@@ -69,7 +70,11 @@ export default {
 
 	methods: {
 		getOption(n) {
+			//console.log('RecipeOfDay', n, new Date().getSeconds());
 			this.$store.dispatch('store/changeSelection', { date: this.recipeOfDay.date, n });
+		},
+		setPortions(portions) {
+			this.$store.dispatch('store/setPortions', { date: this.recipeOfDay.date, portions });
 		},
 	},
 
@@ -79,7 +84,7 @@ export default {
 				return this.recipeOfDay.recipe.portions;
 			},
 			set(newPortions) {
-				this.$store.dispatch('store/setPortions', { date: this.recipeOfDay.date, portions: newPortions });
+				//this.$store.dispatch('store/setPortions', { date: this.recipeOfDay.date, portions: newPortions });
 			},
 		},
 	},

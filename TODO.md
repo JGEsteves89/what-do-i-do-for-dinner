@@ -11,7 +11,6 @@
 [X] - Store information of 3 days view
 [X] - Create mechanism to add days
 [X] - Add day selection for shopping list
-[X] - Add recipe when selecting the day for the shopping list
 [X] - Create view for shopping list
 [X] - Remove from shopping list
 [X] - Fix bug about quantities with decimal points
@@ -19,6 +18,8 @@
 [X] - Store all the information the the cookies
 [X] - Store and retrieve settings
 [X] - Store shopping list
-[ ] - Add from shopping list
+[X] - Add recipe when selecting the day for the shopping list
+[X] - Store in local storage bought and removed items from the shopping list
+[ ] - Add item in shopping list
 [ ] - Create mechanism remove days
 [ ] - Enhance UI

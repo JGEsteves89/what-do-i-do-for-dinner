@@ -136,10 +136,13 @@ export const actions = {
 
 		let finalShoppingList: any = distinctIngredients
 			.map((i: any) => {
-				return { name: i.name, qtd: i.qtd.map((q: any) => prettyDecimalPoint(q.qtd) + ' ' + q.unit).join(' + ') };
+				return { name: i.name, qtd: i.qtd.map((q: any) => prettyDecimalPoint(q.qtd) + ' ' + q.unit).join(' + '), active: false };
 			})
 			.sort((a: any, b: any) => a.name > b.name);
 		(this as any).commit('store/changeShoppingList', finalShoppingList);
+	},
+	async updateShoppingList({ state }: any, shoppingList: any[]) {
+		(this as any).commit('store/changeShoppingList', shoppingList);
 	},
 	async getSettings({ state }: any) {
 		console.log('Getting settings', this);

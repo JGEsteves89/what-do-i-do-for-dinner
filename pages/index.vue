@@ -35,7 +35,7 @@
 						v-for="(recipe, i) in recipesOfDays"
 						multiple
 						:key="i"
-						:label="getDayString(recipe.date)"
+						:label="getDayString(recipe.date) + ' - ' + recipe.alternatives[recipe.selected].name"
 						v-model="recipe.forShopping" />
 				</v-list>
 				<div class="text-center">

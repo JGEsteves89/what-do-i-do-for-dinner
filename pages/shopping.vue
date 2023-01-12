@@ -5,14 +5,13 @@
 				<v-list-item-action>
 					<v-checkbox :value="item.active" @click="toggle(i)"></v-checkbox>
 				</v-list-item-action>
-
 				<v-list-item-content>
 					<v-list-item-title>{{ item.name }}</v-list-item-title>
 					<v-list-item-subtitle>{{ item.qtd }}</v-list-item-subtitle>
 					<v-divider></v-divider>
 				</v-list-item-content>
 				<v-list-item-action>
-					<v-btn icon @click="shoppingList.splice(i, 1)"><v-icon>mdi-delete</v-icon></v-btn>
+					<v-btn icon @click="remove(i)"><v-icon>mdi-delete</v-icon></v-btn>
 				</v-list-item-action>
 			</v-list-item>
 		</v-list-item-group>
@@ -28,6 +27,11 @@ export default {
 	methods: {
 		toggle(i) {
 			this.internalList[i].active = !this.internalList[i].active;
+			this.$store.dispatch('store/updateShoppingList', this.internalList);
+		},
+		remove(i) {
+			this.internalList.splice(i, 1);
+			this.$store.dispatch('store/updateShoppingList', this.internalList);
 		},
 	},
 	computed: {
@@ -37,11 +41,7 @@ export default {
 	},
 	mounted() {
 		this.$store.dispatch('store/getSettings').then(() => {
-			const list = JSON.parse(JSON.stringify(this.$store.getters['store/getShoppingList']));
-			for (const item of list) {
-				item.active = false;
-			}
-			this.internalList = list;
+			this.internalList = JSON.parse(JSON.stringify(this.$store.getters['store/getShoppingList']));
 		});
 	},
 };

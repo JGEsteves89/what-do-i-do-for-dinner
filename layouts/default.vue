@@ -34,6 +34,7 @@
 		</v-navigation-drawer>
 		<v-footer :absolute="!fixed" app>
 			<span>&copy; {{ new Date().getFullYear() }}</span>
+			<v-spacer />
 			<span>José Esteves</span>
 		</v-footer>
 	</v-app>
@@ -55,8 +56,8 @@ export default {
 				},
 				{
 					icon: 'mdi-chart-bubble',
-					title: 'Inspire',
-					to: '/inspire',
+					title: 'Shopping',
+					to: '/shopping',
 				},
 			],
 			miniVariant: false,

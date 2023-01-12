@@ -39,7 +39,7 @@
 						v-model="recipe.forShopping" />
 				</v-list>
 				<div class="text-center">
-					<v-btn color="primary" elevation="8" rounded @click="debug()">Gerar lista de compras</v-btn>
+					<v-btn color="primary" elevation="8" rounded @click="generateShoppingList()">Gerar lista de compras</v-btn>
 				</div>
 			</v-sheet>
 		</v-bottom-sheet>
@@ -64,7 +64,7 @@ export default {
 					recipe: recipesOfTheDay.alternatives[recipesOfTheDay.selected],
 					alternatives: recipesOfTheDay.alternatives,
 					date: recipesOfTheDay.date,
-					forShopping: false,
+					forShopping: [undefined],
 				});
 			}
 			//console.log('Index recipes of days set', new Date().getSeconds());
@@ -87,10 +87,19 @@ export default {
 			date.setDate(date.getDate() + n);
 			return date;
 		},
-		debug() {
-			for (const test of this.recipesOfDays) {
-				console.log(test.date, test.forShopping);
+		generateShoppingList() {
+			const days = [];
+			for (const recipe of this.recipesOfDays) {
+				console.log(recipe.forShopping);
+				if (recipe.forShopping && recipe.forShopping.length === 1) {
+					days.push(recipe.date);
+				}
 			}
+			if (days.length === 0) return;
+			this.$store.dispatch('store/generateShoppingList', days);
+			this.$router.push({
+				path: '/shopping',
+			});
 		},
 		getDayString(date) {
 			if (new Date().toDateString() === new Date(date).toDateString()) {

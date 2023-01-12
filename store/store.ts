@@ -2,16 +2,22 @@ const getRecipes = (day: number) => import('~/data/' + day + '.json').then((m) =
 const deepCopy = (object: any) => JSON.parse(JSON.stringify(object));
 export const state = (): any => ({
 	recipesOfTheDays: {},
+	shoppingList: [],
 });
 
 export const getters = {
 	getRecipesOfTheDays: (state: any) => state.recipesOfTheDays,
+	getShoppingList: (state: any) => state.shoppingList,
 };
 
 export const mutations = {
 	changeRecipesOfTheDays(state: any, recipesOfTheDays: any) {
 		//console.log('mutations changeRecipesOfTheDay was called');
 		state.recipesOfTheDays = recipesOfTheDays;
+	},
+	changeShoppingList(state: any, shoppingList: any) {
+		//console.log('mutations changeRecipesOfTheDay was called');
+		state.shoppingList = shoppingList;
 	},
 };
 
@@ -50,7 +56,7 @@ export const actions = {
 	async setPortions({ state }: any, info: any) {
 		//console.log('Store setPortions started', info, new Date().getSeconds());
 		const date = new Date(info.date).toDateString();
-		if (!state.recipesOfTheDays) {
+		if (!state.recipesOfTheDays[date]) {
 			await (this as any).dispatch('store/getRecipesOfTheDay');
 		}
 		const copy = deepCopy(state.recipesOfTheDays);
@@ -58,5 +64,38 @@ export const actions = {
 		//console.log('Changing portions to', info.portions);
 		//console.log('Store setPortions commit', new Date().getSeconds());
 		(this as any).commit('store/changeRecipesOfTheDays', copy);
+	},
+	async generateShoppingList({ state }: any, days: any[]) {
+		//console.log('Store setPortions started', info, new Date().getSeconds());
+		for (const day of days) {
+			const date = new Date(day).toDateString();
+			if (!state.recipesOfTheDays[date]) {
+				await (this as any).dispatch('store/getRecipesOfTheDay');
+			}
+		}
+		let ingredients: any = [];
+		for (const day of days) {
+			const date = new Date(day).toDateString();
+			const selected = state.recipesOfTheDays[date].selected;
+			ingredients = ingredients.concat(deepCopy(state.recipesOfTheDays[date].alternatives[selected].ingredients));
+		}
+		let distinctIngredients: any = [];
+		for (const ingredient of ingredients) {
+			const find = distinctIngredients.find((t: any) => t.name === ingredient.name);
+			if (find) {
+				console.log(find.name, find.qtd, find.unit, '+', ingredient.qtd, ingredient.unit);
+				const qtdFind = find.qtd.find((q: any) => q.unit === ingredient.unit);
+				if (qtdFind) {
+					qtdFind.qtd += ingredient.qtd;
+				} else {
+					find.qtd.push({ qtd: ingredient.qtd, unit: ingredient.unit });
+				}
+			} else {
+				ingredient.qtd = [{ qtd: ingredient.qtd, unit: ingredient.unit }];
+				distinctIngredients.push(ingredient);
+			}
+		}
+		distinctIngredients = distinctIngredients.sort((a: any, b: any) => a.name > b.name);
+		(this as any).commit('store/changeShoppingList', distinctIngredients);
 	},
 };

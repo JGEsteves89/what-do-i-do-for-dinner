@@ -21,11 +21,28 @@
 				<RecipeOfDay :recipeOfDay="recipe"></RecipeOfDay>
 			</v-window-item>
 		</v-window>
-		<v-fab-transition>
-			<v-btn fab large dark bottom right fixed>
-				<v-icon large>mdi-basket-plus</v-icon>
-			</v-btn>
-		</v-fab-transition>
+		<v-bottom-sheet v-model="showShoppingList" inset width="92%">
+			<template v-slot:activator="{ on, attrs }">
+				<v-fab-transition>
+					<v-btn v-bind="attrs" v-on="on" fab large dark bottom right fixed>
+						<v-icon large>mdi-basket-plus</v-icon>
+					</v-btn>
+				</v-fab-transition>
+			</template>
+			<v-sheet class="accent pb-10">
+				<v-list class="accent ma-3">
+					<v-checkbox
+						v-for="(recipe, i) in recipesOfDays"
+						multiple
+						:key="i"
+						:label="getDayString(recipe.date)"
+						v-model="recipe.forShopping" />
+				</v-list>
+				<div class="text-center">
+					<v-btn color="primary" elevation="8" rounded @click="debug()">Gerar lista de compras</v-btn>
+				</div>
+			</v-sheet>
+		</v-bottom-sheet>
 	</v-container>
 </template>
 
@@ -33,7 +50,7 @@
 export default {
 	name: 'IndexPage',
 	data() {
-		return { selected: 0, maxDays: 3 };
+		return { selected: 0, maxDays: 3, showShoppingList: false };
 	},
 	computed: {
 		recipesOfDays() {
@@ -47,6 +64,7 @@ export default {
 					recipe: recipesOfTheDay.alternatives[recipesOfTheDay.selected],
 					alternatives: recipesOfTheDay.alternatives,
 					date: recipesOfTheDay.date,
+					forShopping: false,
 				});
 			}
 			//console.log('Index recipes of days set', new Date().getSeconds());
@@ -68,6 +86,11 @@ export default {
 		addDays(date, n) {
 			date.setDate(date.getDate() + n);
 			return date;
+		},
+		debug() {
+			for (const test of this.recipesOfDays) {
+				console.log(test.date, test.forShopping);
+			}
 		},
 		getDayString(date) {
 			if (new Date().toDateString() === new Date(date).toDateString()) {

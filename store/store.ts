@@ -77,13 +77,18 @@ export const actions = {
 		for (const day of days) {
 			const date = new Date(day).toDateString();
 			const selected = state.recipesOfTheDays[date].selected;
-			ingredients = ingredients.concat(deepCopy(state.recipesOfTheDays[date].alternatives[selected].ingredients));
+			const selectedRecipe = state.recipesOfTheDays[date].alternatives[selected];
+			const recipeIngredients = deepCopy(selectedRecipe.ingredients);
+			for (const ingredient of recipeIngredients) {
+				ingredient.qtd = (selectedRecipe.portions * ingredient.qtd) / selectedRecipe.defaultPortions;
+			}
+			ingredients = ingredients.concat(recipeIngredients);
 		}
 		let distinctIngredients: any = [];
 		for (const ingredient of ingredients) {
 			const find = distinctIngredients.find((t: any) => t.name === ingredient.name);
 			if (find) {
-				console.log(find.name, find.qtd, find.unit, '+', ingredient.qtd, ingredient.unit);
+				//(find.name, find.qtd, find.unit, '+', ingredient.qtd, ingredient.unit);
 				const qtdFind = find.qtd.find((q: any) => q.unit === ingredient.unit);
 				if (qtdFind) {
 					qtdFind.qtd += ingredient.qtd;

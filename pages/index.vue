@@ -90,7 +90,7 @@ export default {
 		generateShoppingList() {
 			const days = [];
 			for (const recipe of this.recipesOfDays) {
-				console.log(recipe.forShopping);
+				//console.log(recipe.forShopping);
 				if (recipe.forShopping && recipe.forShopping.length === 1) {
 					days.push(recipe.date);
 				}

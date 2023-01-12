@@ -15,7 +15,7 @@
 [X] - Create view for shopping list
 [X] - Remove from shopping list
 [X] - Fix bug about quantities with decimal points
-[ ] - Shopping list does not have into account portions.
+[X] - Shopping list does not have into account portions.
 [ ] - Store all the information the the cookies
 [ ] - Store and retrieve settings
 [ ] - Store shopping list

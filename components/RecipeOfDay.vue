@@ -15,7 +15,7 @@
 						</v-row>
 					</template>
 				</v-img>
-				<v-tabs grow>
+				<v-tabs v-model="recipeOfDay.selected" grow>
 					<v-tab @click="getOption(0)">Opção 1</v-tab>
 					<v-tab @click="getOption(1)">Opção 2</v-tab>
 					<v-tab @click="getOption(2)">Opção 3</v-tab>

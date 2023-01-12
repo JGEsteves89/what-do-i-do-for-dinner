@@ -65,6 +65,7 @@ export default {
 					alternatives: recipesOfTheDay.alternatives,
 					date: recipesOfTheDay.date,
 					forShopping: [undefined],
+					selected: recipesOfTheDay.selected,
 				});
 			}
 			//console.log('Index recipes of days set', new Date().getSeconds());
@@ -111,12 +112,17 @@ export default {
 			} else if (this.addDays(new Date(), 3).toDateString() === new Date(date).toDateString()) {
 				return 'Depois depois de manhã';
 			}
-			return new Date(date).toStringDate();
+			return new Date(date).toDateString();
 		},
 	},
 	mounted() {
 		//console.log('Component mounted');
-		this.$store.dispatch('store/getRecipesOfTheDays', new Date());
+		this.$store.dispatch('store/getSettings').then(() => {
+			console.log('index, getSettings ended', this.recipesOfDays);
+			if (this.recipesOfDays.length === 0) {
+				this.$store.dispatch('store/getRecipesOfTheDays', new Date());
+			}
+		});
 	},
 };
 </script>

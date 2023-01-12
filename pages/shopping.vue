@@ -8,7 +8,7 @@
 
 				<v-list-item-content>
 					<v-list-item-title>{{ item.name }}</v-list-item-title>
-					<v-list-item-subtitle>{{ item.qtd.map((q) => prettyDecimalPoint(q.qtd) + ' ' + q.unit).join(' + ') }}</v-list-item-subtitle>
+					<v-list-item-subtitle>{{ item.qtd }}</v-list-item-subtitle>
 					<v-divider></v-divider>
 				</v-list-item-content>
 				<v-list-item-action>
@@ -29,13 +29,6 @@ export default {
 		toggle(i) {
 			this.internalList[i].active = !this.internalList[i].active;
 		},
-		prettyDecimalPoint(qtd) {
-			let prettyDecimal = qtd.toString();
-			if (prettyDecimal.includes('.')) {
-				prettyDecimal = qtd.toFixed(1);
-			}
-			return prettyDecimal;
-		},
 	},
 	computed: {
 		shoppingList() {
@@ -43,11 +36,13 @@ export default {
 		},
 	},
 	mounted() {
-		const list = JSON.parse(JSON.stringify(this.$store.getters['store/getShoppingList']));
-		for (const item of list) {
-			item.active = false;
-		}
-		this.internalList = list;
+		this.$store.dispatch('store/getSettings').then(() => {
+			const list = JSON.parse(JSON.stringify(this.$store.getters['store/getShoppingList']));
+			for (const item of list) {
+				item.active = false;
+			}
+			this.internalList = list;
+		});
 	},
 };
 </script>

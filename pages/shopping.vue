@@ -3,7 +3,7 @@
 		<v-list-item-group>
 			<v-list-item v-for="(item, i) in shoppingList" :key="item.name">
 				<v-list-item-action>
-					<v-checkbox :value="item.active" @click="toggle(i)"></v-checkbox>
+					<v-checkbox v-model="item.active" @click="update(i)"></v-checkbox>
 				</v-list-item-action>
 				<v-list-item-content>
 					<v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -25,18 +25,21 @@ export default {
 		return { internalList: [] };
 	},
 	methods: {
-		toggle(i) {
-			this.internalList[i].active = !this.internalList[i].active;
-			this.$store.dispatch('store/updateShoppingList', this.internalList);
+		update() {
+			this.$store.dispatch('store/updateShoppingList', this.shoppingList);
 		},
 		remove(i) {
+			//console.log(this.internalList[i].name);
 			this.internalList.splice(i, 1);
-			this.$store.dispatch('store/updateShoppingList', this.internalList);
+			this.$store.dispatch('store/updateShoppingList', this.shoppingList);
 		},
 	},
 	computed: {
 		shoppingList() {
-			return this.internalList.sort((a, b) => (a.active ? 1 : -1) - (b.active ? 1 : -1));
+			return this.internalList
+				.filter((i) => !i.active)
+				.sort((a, b) => a.name > b.name)
+				.concat(this.internalList.filter((i) => i.active).sort((a, b) => a.name > b.name));
 		},
 	},
 	mounted() {

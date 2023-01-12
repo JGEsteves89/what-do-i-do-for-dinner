@@ -142,15 +142,15 @@ export const actions = {
 		(this as any).commit('store/changeShoppingList', finalShoppingList);
 	},
 	async updateShoppingList({ state }: any, shoppingList: any[]) {
-		(this as any).commit('store/changeShoppingList', shoppingList);
+		(this as any).commit('store/changeShoppingList', deepCopy(shoppingList));
 	},
 	async getSettings({ state }: any) {
-		console.log('Getting settings', this);
+		//console.log('Getting settings', this);
 		const allCookies = deepCopy((this as any).$cookies.getAll());
 		if (state.empty) {
-			console.log('Restoring cookies', allCookies);
+			//console.log('Restoring cookies', allCookies);
 			if (allCookies.recipesOfTheDaysSmall) {
-				console.log('Restoring recipes');
+				//console.log('Restoring recipes');
 				for (const recipeDay of Object.values(allCookies.recipesOfTheDaysSmall) as any[]) {
 					if (new Date(new Date().toDateString()) <= new Date(new Date(recipeDay.date).toDateString())) {
 						await (this as any).dispatch('store/getRecipesOfTheDays', new Date(recipeDay.date));
@@ -164,11 +164,11 @@ export const actions = {
 						copy[date].alternatives[recipeDay.selected].portions = recipeDay.portions;
 					}
 				}
-				console.log('Changed recipes to', copy);
+				//console.log('Changed recipes to', copy);
 				(this as any).commit('store/changeRecipesOfTheDays', copy);
 			}
 			if (allCookies.shoppingList) {
-				console.log('Restoring ingredients');
+				//console.log('Restoring ingredients');
 				(this as any).commit('store/changeShoppingList', allCookies.shoppingList);
 			}
 		}

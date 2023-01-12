@@ -40,7 +40,7 @@
 										<v-layout row class="d-flex justify-space-between pa-0 ma-0">
 											<v-flex xs8>{{ item.name }}</v-flex>
 											<v-flex xs4 class="align-self-center">
-												{{ (recipeOfDay.recipe.portions * item.qtd) / recipeOfDay.recipe.defaultPortions }} {{ item.unit }}
+												{{ prettyDecimalPoint(recipeOfDay.recipe, item.qtd) }} {{ item.unit }}
 											</v-flex>
 										</v-layout>
 									</v-container>
@@ -75,6 +75,14 @@ export default {
 		},
 		setPortions(portions) {
 			this.$store.dispatch('store/setPortions', { date: this.recipeOfDay.date, portions });
+		},
+		prettyDecimalPoint(recipe, qtd) {
+			const exact = recipe.portions * (qtd / recipe.defaultPortions);
+			let prettyDecimal = exact.toString();
+			if (prettyDecimal.includes('.')) {
+				prettyDecimal = exact.toFixed(1);
+			}
+			return prettyDecimal;
 		},
 	},
 

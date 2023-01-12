@@ -10,12 +10,15 @@
 [X] - Create 3 days view
 [X] - Store information of 3 days view
 [X] - Create mechanism to add days
-[ ] - Add day selection with gestures
-[ ] - Add day selection for shopping list
-[ ] - Create icon
+[X] - Add day selection for shopping list
+[X] - Add recipe when selecting the day for the shopping list
+[X] - Create view for shopping list
+[X] - Remove from shopping list
+[X] - Fix bug about quantities with decimal points
+[ ] - Shopping list does not have into account portions.
+[ ] - Store all the information the the cookies
 [ ] - Store and retrieve settings
-[ ] - Create view for shopping list
-[ ] - Add remove from shopping list
 [ ] - Store shopping list
+[ ] - Add from shopping list
 [ ] - Create mechanism remove days
 [ ] - Enhance UI
